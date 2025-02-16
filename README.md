@@ -13,3 +13,6 @@ npx hardhat node
 npx hardhat ignition deploy ignition/modules/YidengContract.ts --network sepolia
 npx hardhat verify --network sepolia DEPLOYED_CONTRACT_ADDRESS "Yideng Token" "YDT" "18"
 ```
+
+# example demo contract -sepolia 
+https://sepolia.etherscan.io/address/0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6
