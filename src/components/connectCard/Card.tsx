@@ -31,7 +31,7 @@ export function Card({
   provider,
 }: Props) {
   return (
-    <div className="flex flex-col justify-between w-80 p-6 m-4 overflow-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="flex flex-col justify-between w-80 p-6 m-4 overflow-auto rounded-xl">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold text-gray-900">MetaMask</span>

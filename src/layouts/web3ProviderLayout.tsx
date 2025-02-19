@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "@/components/common/HeaderConnectKit";
-import {Web3Provider} from "@/pages/Web3Provider";
+import {Web3Provider} from "@/pages/Web3ProviderConnectKit";
 const Layout = () => {
     return (
       <Web3Provider>

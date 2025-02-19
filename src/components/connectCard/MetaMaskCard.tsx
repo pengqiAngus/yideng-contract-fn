@@ -13,7 +13,7 @@ export default function MetaMaskCard() {
   const isActive = useIsActive()
 
   const provider = useProvider()
-  const ENSNames = useENSNames(provider)
+//   const ENSNames = useENSNames(provider)
 
   const [error, setError] = useState(undefined)
 
@@ -34,7 +34,7 @@ export default function MetaMaskCard() {
       setError={setError}
       accounts={accounts}
       provider={provider}
-      ENSNames={ENSNames}
+    //   ENSNames={ENSNames}
     />
   )
 }

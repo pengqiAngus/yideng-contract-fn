@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate-type": "typechain --target=ethers-v5 'artifacts/contracts/YidengContract.sol/YidengContract.json'",
+    "generate-type": "typechain --target=ethers-v5 'src/utils/YidengContract.json'",
     "clent:dev": "webpack --mode development",
     "clent:server": "webpack serve --mode development",
     "clent:prod": "webpack --mode production",

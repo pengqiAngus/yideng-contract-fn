@@ -1,7 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import WalletConnectButton from "../connectCard/ConnectButton";
-
+import { hooks, metaMask } from '@/connectors/metaMask'
+import { Accounts } from "../connectCard/Accounts";
+const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
 const Header = () => {
+
+    const accounts = useAccounts();
+    const provider = useProvider();
+    const ENSNames = useENSNames(provider);
   const location = useLocation();
 
   const isActive = (path) => {
@@ -28,9 +34,10 @@ const Header = () => {
         <nav className="flex items-center space-x-4">
           <NavLink to="/">HomePage</NavLink>
           <NavLink to="/dapp">Dapp</NavLink>
-        </nav>
+              </nav>
+        <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
         {/* Right side wallet button */}
-       < WalletConnectButton/>
+        <WalletConnectButton />
       </div>
     </header>
   );
