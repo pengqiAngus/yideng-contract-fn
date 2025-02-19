@@ -1,21 +1,22 @@
 import { WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet } from "wagmi/chains";
+import { mainnet, localhost } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
 const config = createConfig(
   getDefaultConfig({
     // Your dApps chains
-    chains: [mainnet],
+    chains: [mainnet, localhost],
     transports: {
       // RPC URL for each chain
-      [mainnet.id]: http(
-        `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
-      ),
+      [localhost.id]: http("http://localhost:8545"),
+    //   [mainnet.id]: http(
+    //     `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
+    //   ),
     },
 
     // Required API Keys
-    walletConnectProjectId: '2d1f62454c3db12347ca0966d7f05da5',
+    walletConnectProjectId: "2d1f62454c3db12347ca0966d7f05da5",
 
     // Required App Info
     appName: "yideng",

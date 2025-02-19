@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 const CONTRACT_ADDRESS = "0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6";
-
 const StakingDApp = () => {
   const { useProvider, useAccounts } = hooks;
   const accounts = useAccounts();
@@ -38,31 +37,32 @@ const StakingDApp = () => {
   }, [provider, account]);
   // 初始化合约
   const getContract = async () => {
-    const signer = provider!.getSigner();
-    const tokenContract =  YidengContract__factory.connect(
+      const signer = provider!.getSigner();
+      console.log(provider, signer, CONTRACT_ADDRESS);
+      
+    const tokenContract =  await YidengContract__factory.connect(
       CONTRACT_ADDRESS,
       signer!
     );
+      console.log(tokenContract);
+      
     setContract(tokenContract);
 
-    loadUserData();
+   await loadUserData(tokenContract);
     return () => {
       tokenContract.removeAllListeners();
     };
   };
 
   // 加载用户数据
-  const loadUserData = async () => {
+  const loadUserData = async (tokenContract: YidengContract) => {
     try {
-        if (!contract || !account) return;
-        console.log("contract", contract);
-        
-      const balance = await contract.balanceOf(account);
-      const interest = await contract.calculateInterest(account);
-      const stake = await contract.stakes(account);
+      if (!tokenContract || !account) return;
 
-    console.log("balance", balance);
-    
+      const balance = await tokenContract.balanceOf(account);
+      const interest = await tokenContract.calculateInterest(account);
+      const stake = await tokenContract.stakes(account);
+
       setTokenBalance(ethers.utils.formatEther(balance));
       setPendingInterest(ethers.utils.formatEther(interest));
       setStakeInfo({
@@ -86,7 +86,6 @@ const StakingDApp = () => {
         value: ethers.utils.parseEther(stakeAmount),
       });
       await tx.wait();
-      await loadUserData();
       setStakeAmount("");
     } catch (err) {
       console.error("Staking error:", err);

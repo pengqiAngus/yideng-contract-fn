@@ -13,16 +13,16 @@ export default function MetaMaskCard() {
   const isActive = useIsActive()
 
   const provider = useProvider()
-//   const ENSNames = useENSNames(provider)
+  const ENSNames = useENSNames(provider)
 
   const [error, setError] = useState(undefined)
 
   // attempt to connect eagerly on mount
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to metamask')
-    })
-  }, [])
+//   useEffect(() => {
+//     void metaMask.connectEagerly().catch(() => {
+//       console.debug('Failed to connect eagerly to metamask')
+//     })
+//   }, [])
 
   return (
     <Card
@@ -34,7 +34,7 @@ export default function MetaMaskCard() {
       setError={setError}
       accounts={accounts}
       provider={provider}
-    //   ENSNames={ENSNames}
+      ENSNames={ENSNames}
     />
   )
 }
