@@ -12,6 +12,10 @@
     "test:uidiff": "backstop test",
     "test": "jest --collectCoverage --reporters default jest-stare"
   },
+  "jest-stare": {
+    "coverageLink": "../jest-coverage/lcov-report/index.html",
+    "resultDir": "docs/jest-stare"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

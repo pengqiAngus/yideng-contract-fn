@@ -18,7 +18,7 @@
     {
       "label": "BackstopJS Homepage",
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
-      "url": "https://map.qq.com/m/",
+      "url": "http://localhost:3003/dapp",
       "referenceUrl": "",
       "readyEvent": "",
       "readySelector": "",

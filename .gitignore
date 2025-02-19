@@ -4,11 +4,11 @@ node_modules
 # Hardhat files
 /cache
 /artifacts
-
+/docs
 # TypeChain files
 /typechain
 /typechain-types
-
+/backstop_data/bitmaps_test
 # solidity-coverage files
 /coverage
 /coverage.json

@@ -6,18 +6,6 @@ const ETH: AddEthereumChainParameter['nativeCurrency'] = {
   decimals: 18,
 }
 
-const MATIC: AddEthereumChainParameter['nativeCurrency'] = {
-  name: 'Matic',
-  symbol: 'MATIC',
-  decimals: 18,
-}
-
-const CELO: AddEthereumChainParameter['nativeCurrency'] = {
-  name: 'Celo',
-  symbol: 'CELO',
-  decimals: 18,
-}
-
 interface BasicChainInformation {
   urls: string[]
   name: string

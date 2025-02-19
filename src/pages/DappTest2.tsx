@@ -199,7 +199,7 @@ const StakingDApp = () => {
       <div className="flex justify-center items-center h-96">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center space-x-2">
           <Wallet className="w-5 h-5 text-yellow-500" />
-          <span>Please connect your wallet to use the DApp</span>
+          <span className="text-amber-200">Please connect your wallet to use the DApp</span>
         </div>
       </div>
     );
