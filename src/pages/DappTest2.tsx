@@ -1,3 +1,4 @@
+// StakingDApp.tsx
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { hooks } from "@/connectors/metaMask";
@@ -11,10 +12,89 @@ import {
   Loader,
   Wallet,
   CircleDollarSign,
-  PiggyBank,
+  Send,
 } from "lucide-react";
 
+// Transfer Section Component
+const TransferSection = ({
+  contract,
+  onSuccess,
+  loading,
+  setLoading,
+  setError,
+}) => {
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const handleTransfer = async () => {
+    if (!recipient || !amount || !ethers.utils.isAddress(recipient)) {
+      setError("Please enter a valid recipient address and amount");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const tx = await contract.transfer(
+        recipient,
+        ethers.utils.parseEther(amount)
+      );
+      await tx.wait();
+      setRecipient("");
+      setAmount("");
+      onSuccess();
+    } catch (err) {
+      console.error("Transfer error:", err);
+      setError("Failed to transfer tokens");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4 mb-6 p-4 bg-white rounded-lg border border-gray-200">
+      <h3 className="text-lg font-semibold mb-4 flex items-center">
+        <Send className="w-5 h-5 mr-2" />
+        Transfer Tokens
+      </h3>
+      <div className="space-y-3">
+        <input
+          type="text"
+          placeholder="Recipient Address (0x...)"
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div className="flex space-x-2">
+          <input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleTransfer}
+            disabled={loading || !amount || !recipient}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            {loading ? (
+              <Loader className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                <span>Transfer</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main DApp Component
 const CONTRACT_ADDRESS = "0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6";
+
 const StakingDApp = () => {
   const { useProvider, useAccounts } = hooks;
   const accounts = useAccounts();
@@ -25,30 +105,31 @@ const StakingDApp = () => {
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
   const [tokenBalance, setTokenBalance] = useState("0");
-  const [pendingInterest, setPendingInterest] = useState("0");
   const [stakeInfo, setStakeInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   // 监听账户变化
   useEffect(() => {
     if (provider && account) {
       getContract();
     }
   }, [provider, account]);
+
   // 初始化合约
   const getContract = async () => {
-      const signer = provider!.getSigner();
-      console.log(provider, signer, CONTRACT_ADDRESS);
-      
-    const tokenContract =  await YidengContract__factory.connect(
+    const signer = provider!.getSigner();
+    console.log(provider, signer, CONTRACT_ADDRESS);
+
+    const tokenContract = YidengContract__factory.connect(
       CONTRACT_ADDRESS,
       signer!
     );
-      console.log(tokenContract);
-      
+    console.log(tokenContract);
+
     setContract(tokenContract);
 
-   await loadUserData(tokenContract);
+    await loadUserData(tokenContract);
     return () => {
       tokenContract.removeAllListeners();
     };
@@ -60,11 +141,9 @@ const StakingDApp = () => {
       if (!tokenContract || !account) return;
 
       const balance = await tokenContract.balanceOf(account);
-      const interest = await tokenContract.calculateInterest(account);
       const stake = await tokenContract.stakes(account);
 
       setTokenBalance(ethers.utils.formatEther(balance));
-      setPendingInterest(ethers.utils.formatEther(interest));
       setStakeInfo({
         amount: ethers.utils.formatEther(stake[0]),
         stakingTime: stake[1].toString(),
@@ -78,15 +157,16 @@ const StakingDApp = () => {
 
   // 质押 ETH
   const handleStake = async () => {
-    if (!stakeAmount) return;
+    if (!stakeAmount || !contract) return;
     setLoading(true);
     setError("");
     try {
-      const tx = await contract?.stakeEth({
+      const tx = await contract.stakeEth({
         value: ethers.utils.parseEther(stakeAmount),
       });
       await tx.wait();
       setStakeAmount("");
+      await loadUserData(contract);
     } catch (err) {
       console.error("Staking error:", err);
       setError("Failed to stake ETH");
@@ -97,36 +177,18 @@ const StakingDApp = () => {
 
   // 赎回代币
   const handleUnstake = async () => {
-    if (!unstakeAmount) return;
+    if (!unstakeAmount || !contract) return;
     setLoading(true);
     setError("");
 
     try {
       const tx = await contract.unstake(ethers.utils.parseEther(unstakeAmount));
       await tx.wait();
-      await loadUserData();
+      await loadUserData(contract);
       setUnstakeAmount("");
     } catch (err) {
       console.error("Unstaking error:", err);
       setError("Failed to unstake tokens");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 领取利息
-  const handleClaimInterest = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const contract = getContract();
-      const tx = await contract.claimInterest();
-      await tx.wait();
-      await loadUserData();
-    } catch (err) {
-      console.error("Claim interest error:", err);
-      setError("Failed to claim interest");
     } finally {
       setLoading(false);
     }
@@ -149,21 +211,12 @@ const StakingDApp = () => {
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-4">Staking Dashboard</h2>
 
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center space-x-2 mb-1">
-                <CircleDollarSign className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-500">Token Balance</span>
-              </div>
-              <p className="text-xl font-bold">{tokenBalance}</p>
+          <div className="bg-gray-50 p-4 rounded-lg mb-6">
+            <div className="flex items-center space-x-2 mb-1">
+              <CircleDollarSign className="w-4 h-4 text-gray-500" />
+              <span className="text-sm text-gray-500">Token Balance</span>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center space-x-2 mb-1">
-                <PiggyBank className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-500">Pending Interest</span>
-              </div>
-              <p className="text-xl font-bold">{pendingInterest}</p>
-            </div>
+            <p className="text-xl font-bold">{tokenBalance}</p>
           </div>
 
           {/* Stake ETH Section */}
@@ -214,18 +267,14 @@ const StakingDApp = () => {
             </div>
           </div>
 
-          {/* Claim Interest Button */}
-          <button
-            onClick={handleClaimInterest}
-            disabled={loading || pendingInterest === "0"}
-            className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-          >
-            {loading ? (
-              <Loader className="w-4 h-4 animate-spin" />
-            ) : (
-              "Claim Interest"
-            )}
-          </button>
+          {/* Transfer Section */}
+          <TransferSection
+            contract={contract}
+            onSuccess={() => loadUserData(contract)}
+            loading={loading}
+            setLoading={setLoading}
+            setError={setError}
+          />
 
           {error && (
             <div className="mt-4 p-4 bg-red-50 text-red-500 rounded-lg flex items-center space-x-2">
