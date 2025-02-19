@@ -8,6 +8,7 @@
     "clent:dev": "webpack --mode development",
     "clent:server": "webpack serve --mode development",
     "clent:prod": "webpack --mode production",
+    "build": "webpack --mode production",
     "test:uidiff": "backstop test",
     "test": "jest --collectCoverage --reporters default jest-stare"
   },
