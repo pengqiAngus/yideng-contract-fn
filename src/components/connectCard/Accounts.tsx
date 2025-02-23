@@ -1,7 +1,7 @@
-import type { BigNumber } from "@ethersproject/bignumber";
-import { formatEther } from "@ethersproject/units";
-import type { Web3ReactHooks } from "@web3-react/core";
-import { useEffect, useState } from "react";
+import type { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
+import type { Web3ReactHooks } from '@web3-react/core';
+import { useEffect, useState } from 'react';
 
 // 辅助函数：截断地址
 const truncateAddress = (address: string) => {
@@ -13,12 +13,12 @@ const truncateAddress = (address: string) => {
 const formatBalance = (balance: BigNumber) => {
   const formatted = formatEther(balance);
   // 只保留 4 位小数
-  return Number(formatted).toFixed(4) + "ETH";
+  return Number(formatted).toFixed(4) + 'ETH';
 };
 
 function useBalances(
-  provider?: ReturnType<Web3ReactHooks["useProvider"]>,
-  accounts?: string[]
+  provider?: ReturnType<Web3ReactHooks['useProvider']>,
+  accounts?: string[],
 ): BigNumber[] | undefined {
   const [balances, setBalances] = useState<BigNumber[] | undefined>();
 
@@ -26,9 +26,7 @@ function useBalances(
     if (provider && accounts?.length) {
       let stale = false;
 
-      void Promise.all(
-        accounts.map((account) => provider.getBalance(account))
-      ).then((balances) => {
+      void Promise.all(accounts.map(account => provider.getBalance(account))).then(balances => {
         if (stale) return;
         setBalances(balances);
       });
@@ -48,9 +46,9 @@ export function Accounts({
   provider,
   ENSNames,
 }: {
-  accounts: ReturnType<Web3ReactHooks["useAccounts"]>;
-  provider: ReturnType<Web3ReactHooks["useProvider"]>;
-  ENSNames: ReturnType<Web3ReactHooks["useENSNames"]>;
+  accounts: ReturnType<Web3ReactHooks['useAccounts']>;
+  provider: ReturnType<Web3ReactHooks['useProvider']>;
+  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>;
 }) {
   const balances = useBalances(provider, accounts);
 
@@ -60,14 +58,14 @@ export function Accounts({
     <div>
       <span>Accounts: </span>
       {accounts.length === 0
-        ? "None"
+        ? 'None'
         : accounts?.map((account, i) => (
             <span
               key={account}
               style={{
                 margin: 0,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               {ENSNames?.[i] ?? truncateAddress(account)}

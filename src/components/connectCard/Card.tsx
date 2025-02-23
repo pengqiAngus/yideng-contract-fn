@@ -1,20 +1,20 @@
-import type { Web3ReactHooks } from "@web3-react/core";
-import type { MetaMask } from "@web3-react/metamask";
-import { Accounts } from "./Accounts";
-import { Chain } from "./Chain";
-import { ConnectWithSelect } from "./ConnectWithSelect";
-import { Status } from "./Status";
+import type { Web3ReactHooks } from '@web3-react/core';
+import type { MetaMask } from '@web3-react/metamask';
+import { Accounts } from './Accounts';
+import { Chain } from './Chain';
+import { ConnectWithSelect } from './ConnectWithSelect';
+import { Status } from './Status';
 
 interface Props {
   connector: MetaMask;
-  activeChainId: ReturnType<Web3ReactHooks["useChainId"]>;
-  chainIds?: ReturnType<Web3ReactHooks["useChainId"]>[];
-  isActivating: ReturnType<Web3ReactHooks["useIsActivating"]>;
-  isActive: ReturnType<Web3ReactHooks["useIsActive"]>;
+  activeChainId: ReturnType<Web3ReactHooks['useChainId']>;
+  chainIds?: ReturnType<Web3ReactHooks['useChainId']>[];
+  isActivating: ReturnType<Web3ReactHooks['useIsActivating']>;
+  isActive: ReturnType<Web3ReactHooks['useIsActive']>;
   error: Error | undefined;
   setError: (error: Error | undefined) => void;
-  ENSNames: ReturnType<Web3ReactHooks["useENSNames"]>;
-  provider?: ReturnType<Web3ReactHooks["useProvider"]>;
+  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>;
+  provider?: ReturnType<Web3ReactHooks['useProvider']>;
   accounts?: string[];
 }
 
@@ -35,20 +35,12 @@ export function Card({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold text-gray-900">MetaMask</span>
-          <Status
-            isActivating={isActivating}
-            isActive={isActive}
-            error={error}
-          />
+          <Status isActivating={isActivating} isActive={isActive} error={error} />
         </div>
 
         <div className="space-y-2">
           <Chain chainId={activeChainId} />
-          <Accounts
-            accounts={accounts}
-            provider={provider}
-            ENSNames={ENSNames}
-          />
+          <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
         </div>
 
         <div className="pt-4">

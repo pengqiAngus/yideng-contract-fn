@@ -1,50 +1,32 @@
 // StakingDApp.tsx
-import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import { hooks } from "@/connectors/metaMask";
-import {
-  YidengContract,
-  YidengContract__factory,
-} from "@/types/ethers-contracts";
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import { hooks } from '@/connectors/metaMask';
+import { YidengContract, YidengContract__factory } from '@/types/ethers-contracts';
 
-import {
-  AlertCircle,
-  Loader,
-  Wallet,
-  CircleDollarSign,
-  Send,
-} from "lucide-react";
+import { AlertCircle, Loader, Wallet, CircleDollarSign, Send } from 'lucide-react';
 
 // Transfer Section Component
-const TransferSection = ({
-  contract,
-  onSuccess,
-  loading,
-  setLoading,
-  setError,
-}) => {
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
+const TransferSection = ({ contract, onSuccess, loading, setLoading, setError }) => {
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
 
   const handleTransfer = async () => {
     if (!recipient || !amount || !ethers.utils.isAddress(recipient)) {
-      setError("Please enter a valid recipient address and amount");
+      setError('Please enter a valid recipient address and amount');
       return;
     }
 
     setLoading(true);
     try {
-      const tx = await contract.transfer(
-        recipient,
-        ethers.utils.parseEther(amount)
-      );
+      const tx = await contract.transfer(recipient, ethers.utils.parseEther(amount));
       await tx.wait();
-      setRecipient("");
-      setAmount("");
+      setRecipient('');
+      setAmount('');
       onSuccess();
     } catch (err) {
-      console.error("Transfer error:", err);
-      setError("Failed to transfer tokens");
+      console.error('Transfer error:', err);
+      setError('Failed to transfer tokens');
     } finally {
       setLoading(false);
     }
@@ -61,7 +43,7 @@ const TransferSection = ({
           type="text"
           placeholder="Recipient Address (0x...)"
           value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
+          onChange={e => setRecipient(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <div className="flex space-x-2">
@@ -69,7 +51,7 @@ const TransferSection = ({
             type="number"
             placeholder="Amount"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={e => setAmount(e.target.value)}
             className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -93,7 +75,7 @@ const TransferSection = ({
 };
 
 // Main DApp Component
-const CONTRACT_ADDRESS = "0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6";
+const CONTRACT_ADDRESS = '0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6';
 
 const StakingDApp = () => {
   const { useProvider, useAccounts } = hooks;
@@ -102,12 +84,12 @@ const StakingDApp = () => {
   const [contract, setContract] = useState<YidengContract | null>(null);
   const provider = useProvider();
 
-  const [stakeAmount, setStakeAmount] = useState("");
-  const [unstakeAmount, setUnstakeAmount] = useState("");
-  const [tokenBalance, setTokenBalance] = useState("0");
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [unstakeAmount, setUnstakeAmount] = useState('');
+  const [tokenBalance, setTokenBalance] = useState('0');
   const [stakeInfo, setStakeInfo] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // 监听账户变化
   useEffect(() => {
@@ -121,10 +103,7 @@ const StakingDApp = () => {
     const signer = provider!.getSigner();
     console.log(provider, signer, CONTRACT_ADDRESS);
 
-    const tokenContract = YidengContract__factory.connect(
-      CONTRACT_ADDRESS,
-      signer!
-    );
+    const tokenContract = YidengContract__factory.connect(CONTRACT_ADDRESS, signer!);
     console.log(tokenContract);
 
     setContract(tokenContract);
@@ -150,8 +129,8 @@ const StakingDApp = () => {
         lastInterestTime: stake[2].toString(),
       });
     } catch (err) {
-      console.error("Error loading user data:", err);
-      setError("Failed to load user data");
+      console.error('Error loading user data:', err);
+      setError('Failed to load user data');
     }
   };
 
@@ -159,17 +138,17 @@ const StakingDApp = () => {
   const handleStake = async () => {
     if (!stakeAmount || !contract) return;
     setLoading(true);
-    setError("");
+    setError('');
     try {
       const tx = await contract.stakeEth({
         value: ethers.utils.parseEther(stakeAmount),
       });
       await tx.wait();
-      setStakeAmount("");
+      setStakeAmount('');
       await loadUserData(contract);
     } catch (err) {
-      console.error("Staking error:", err);
-      setError("Failed to stake ETH");
+      console.error('Staking error:', err);
+      setError('Failed to stake ETH');
     } finally {
       setLoading(false);
     }
@@ -179,16 +158,16 @@ const StakingDApp = () => {
   const handleUnstake = async () => {
     if (!unstakeAmount || !contract) return;
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const tx = await contract.unstake(ethers.utils.parseEther(unstakeAmount));
       await tx.wait();
       await loadUserData(contract);
-      setUnstakeAmount("");
+      setUnstakeAmount('');
     } catch (err) {
-      console.error("Unstaking error:", err);
-      setError("Failed to unstake tokens");
+      console.error('Unstaking error:', err);
+      setError('Failed to unstake tokens');
     } finally {
       setLoading(false);
     }
@@ -226,7 +205,7 @@ const StakingDApp = () => {
                 type="number"
                 placeholder="ETH Amount"
                 value={stakeAmount}
-                onChange={(e) => setStakeAmount(e.target.value)}
+                onChange={e => setStakeAmount(e.target.value)}
                 className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
@@ -234,11 +213,7 @@ const StakingDApp = () => {
                 disabled={loading || !stakeAmount}
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
-                {loading ? (
-                  <Loader className="w-4 h-4 animate-spin" />
-                ) : (
-                  "Stake ETH"
-                )}
+                {loading ? <Loader className="w-4 h-4 animate-spin" /> : 'Stake ETH'}
               </button>
             </div>
           </div>
@@ -250,7 +225,7 @@ const StakingDApp = () => {
                 type="number"
                 placeholder="Token Amount"
                 value={unstakeAmount}
-                onChange={(e) => setUnstakeAmount(e.target.value)}
+                onChange={e => setUnstakeAmount(e.target.value)}
                 className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
@@ -258,11 +233,7 @@ const StakingDApp = () => {
                 disabled={loading || !unstakeAmount}
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
-                {loading ? (
-                  <Loader className="w-4 h-4 animate-spin" />
-                ) : (
-                  "Unstake"
-                )}
+                {loading ? <Loader className="w-4 h-4 animate-spin" /> : 'Unstake'}
               </button>
             </div>
           </div>
@@ -290,16 +261,11 @@ const StakingDApp = () => {
               <div className="space-y-2 text-sm">
                 <p>Staked Amount: {stakeInfo.amount} tokens</p>
                 <p>
-                  Staking Time:{" "}
-                  {new Date(
-                    Number(stakeInfo.stakingTime) * 1000
-                  ).toLocaleString()}
+                  Staking Time: {new Date(Number(stakeInfo.stakingTime) * 1000).toLocaleString()}
                 </p>
                 <p>
-                  Last Interest Calculation:{" "}
-                  {new Date(
-                    Number(stakeInfo.lastInterestTime) * 1000
-                  ).toLocaleString()}
+                  Last Interest Calculation:{' '}
+                  {new Date(Number(stakeInfo.lastInterestTime) * 1000).toLocaleString()}
                 </p>
               </div>
             </div>

@@ -1,28 +1,43 @@
-;import * as React from "react";
-import { useRoutes } from "react-router-dom";
-import PageNotFoundView from "@/components/common/PageNotFoundView";
-import MainLayout from "@/layouts/Layout";
-import Web3ProviderLayout from "@/layouts/web3ProviderLayout";
-import DappTest from "@/pages/DappTest";
-import DappTest2 from "@/pages/DappTest2";
-import Home from "@/pages/Home";
+import * as React from 'react';
+import { useRoutes } from 'react-router-dom';
+import PageNotFoundView from '@/components/common/PageNotFoundView';
+import MainLayout from '@/layouts/Layout';
+import Web3ProviderLayout from '@/layouts/web3ProviderLayout';
+import DappTest from '@/pages/DappTest';
+import DappTest2 from '@/pages/DappTest2';
+import Home from '@/pages/Home';
+import { lazy, Suspense } from 'react';
+import Loading from '@/components/common/Loading';
+
+const AsyncTest = lazy(() => import('@/asyncComponents/common/AsyncTest'));
+
+const Layout = () => (
+  <Suspense fallback={<Loading />}>
+    <MainLayout />
+  </Suspense>
+);
 const App = () => {
-  const routing = useRoutes([mainRoutes]);
-  if (process.env.NODE_ENV === "development") {
-    console.log("development");
+  const routing = useRoutes([mainRoutes, asyncRoutes]);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('development');
   }
   return routing;
 };
 
 const mainRoutes = {
-  path: "/",
-  element: <MainLayout />,
+  path: '/',
+  element: <Layout />,
   children: [
-    { path: "*", element: <PageNotFoundView /> },
-    { path: "/dapp", element: <DappTest2 /> },
-    { path: "/", element: <Home /> },
-    { path: "404", element: <PageNotFoundView /> },
+    { path: '*', element: <PageNotFoundView /> },
+    { path: '/dapp', element: <DappTest2 /> },
+    { path: '/', element: <Home /> },
+    { path: '404', element: <PageNotFoundView /> },
   ],
+};
+const asyncRoutes = {
+  path: 'yideng',
+  element: <Layout />,
+  children: [{ path: 'async-test', element: <AsyncTest /> }],
 };
 
 export default App;

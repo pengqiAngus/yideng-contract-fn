@@ -1,12 +1,12 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Wallet } from "lucide-react";
-import { ConnectKitButton } from "connectkit";
-import { useAccount } from "wagmi";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Wallet } from 'lucide-react';
+import { ConnectKitButton } from 'connectkit';
+import { useAccount } from 'wagmi';
 const Header = () => {
   const location = useLocation();
- const { address, isConnecting, isDisconnected } = useAccount();
-  const isActive = (path) => {
+  const { address, isConnecting, isDisconnected } = useAccount();
+  const isActive = path => {
     return location.pathname === path;
   };
 
@@ -14,9 +14,7 @@ const Header = () => {
     <Link
       to={to}
       className={`px-4 py-2 rounded-lg transition-colors ${
-        isActive(to)
-          ? "bg-blue-500 text-white"
-          : "text-gray-600 hover:bg-gray-100"
+        isActive(to) ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-gray-100'
       }`}
     >
       {children}
@@ -32,8 +30,8 @@ const Header = () => {
           <NavLink to="/dapp">Dapp</NavLink>
         </nav>
         <div>
-          {isConnecting && "Connecting..."}
-          {isDisconnected && "Disconnected"} 
+          {isConnecting && 'Connecting...'}
+          {isDisconnected && 'Disconnected'}
           Connected Wallet: {address}
         </div>
         {/* Right side wallet button */}

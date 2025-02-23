@@ -1,8 +1,8 @@
-import type { Web3ReactHooks } from "@web3-react/core";
-import type { MetaMask } from "@web3-react/metamask";
-import { useCallback, useEffect, useState } from "react";
-import { CHAINS, getAddChainParameters } from "@utils/chains";
-import { ChevronDown, PowerOff, RefreshCw } from "lucide-react";
+import type { Web3ReactHooks } from '@web3-react/core';
+import type { MetaMask } from '@web3-react/metamask';
+import { useCallback, useEffect, useState } from 'react';
+import { CHAINS, getAddChainParameters } from '@utils/chains';
+import { ChevronDown, PowerOff, RefreshCw } from 'lucide-react';
 
 function ChainSelect({
   activeChainId,
@@ -17,7 +17,7 @@ function ChainSelect({
     <div className="relative">
       <select
         value={activeChainId}
-        onChange={(event) => {
+        onChange={event => {
           switchChain(Number(event.target.value));
         }}
         disabled={switchChain === undefined}
@@ -32,7 +32,7 @@ function ChainSelect({
         <option value={-1} className="py-1">
           默认网络
         </option>
-        {chainIds.map((chainId) => (
+        {chainIds.map(chainId => (
           <option key={chainId} value={chainId} className="py-1">
             {CHAINS[chainId]?.name ?? chainId}
           </option>
@@ -56,10 +56,10 @@ export function ConnectWithSelect({
   setError,
 }: {
   connector: MetaMask;
-  activeChainId: ReturnType<Web3ReactHooks["useChainId"]>;
-  chainIds?: ReturnType<Web3ReactHooks["useChainId"]>[];
-  isActivating: ReturnType<Web3ReactHooks["useIsActivating"]>;
-  isActive: ReturnType<Web3ReactHooks["useIsActive"]>;
+  activeChainId: ReturnType<Web3ReactHooks['useChainId']>;
+  chainIds?: ReturnType<Web3ReactHooks['useChainId']>[];
+  isActivating: ReturnType<Web3ReactHooks['useIsActivating']>;
+  isActive: ReturnType<Web3ReactHooks['useIsActive']>;
   error: Error | undefined;
   setError: (error: Error | undefined) => void;
 }) {
@@ -95,16 +95,12 @@ export function ConnectWithSelect({
         setError(error);
       }
     },
-    [connector, activeChainId, setError]
+    [connector, activeChainId, setError],
   );
 
   return (
     <div className="flex flex-col space-y-4">
-      <ChainSelect
-        activeChainId={desiredChainId}
-        switchChain={switchChain}
-        chainIds={chainIds}
-      />
+      <ChainSelect activeChainId={desiredChainId} switchChain={switchChain} chainIds={chainIds} />
 
       {isActive ? (
         error ? (

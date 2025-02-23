@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Wallet, X } from "lucide-react";
-import MetaMaskCard from "./MetaMaskCard";
+import React, { useState } from 'react';
+import { Wallet, X } from 'lucide-react';
+import MetaMaskCard from './MetaMaskCard';
 
 const WalletConnectButton = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -14,10 +14,7 @@ const WalletConnectButton = () => {
                    border border-gray-200 hover:border-gray-300"
         onClick={() => setIsDialogOpen(true)}
       >
-        <Wallet
-          size={20}
-          className="group-hover:scale-110 transition-transform duration-200"
-        />
+        <Wallet size={20} className="group-hover:scale-110 transition-transform duration-200" />
         <span className="font-medium">连接钱包</span>
       </button>
 
@@ -31,11 +28,10 @@ const WalletConnectButton = () => {
           />
 
           {/* 对话框 */}
-                  <div
-                      
+          <div
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
                        bg-white rounded-lg w-full max-w-md p-6"
-            style={{ zIndex: 1000,background:'#fff' }}
+            style={{ zIndex: 1000, background: '#fff' }}
           >
             <button
               className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -51,7 +47,7 @@ const WalletConnectButton = () => {
             <div className="py-4">
               {/* 这里添加你的钱包连接相关组件 */}
               <div className="text-center text-gray-500">
-                <MetaMaskCard/>
+                <MetaMaskCard />
               </div>
             </div>
           </div>
