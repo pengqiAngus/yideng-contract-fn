@@ -4,7 +4,7 @@ const FriendlyErrorsWebpackPlugin = require("@soda/friendly-errors-webpack-plugi
 const notifier = require("node-notifier");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const port = 3003;
+const port = 3004;
 module.exports = {
   devServer: {
     historyApiFallback: true,
