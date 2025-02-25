@@ -28,5 +28,4 @@
     }
   },
   "include": ["./test", "./scripts", "./ignition", "./src/", "./tests/"],
-  "files": ["./hardhat.config.ts"]
 }

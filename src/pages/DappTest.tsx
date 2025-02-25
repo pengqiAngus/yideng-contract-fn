@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useAccount, useChainId } from 'wagmi';
-import { YidengContract as YidengContractType } from '@/utils/YidengContract';
-import YidengContractInterfaceABI from '@/utils/YidengContract.json';
+import { YidengContract as YidengContractType } from '@/types/yideng-contract/YidengContract';
+import YidengContractInterfaceABI from '@/types/yideng-contract/YidengContract.json';
 import { Loader2 } from 'lucide-react';
 
 const CONTRACT_ADDRESS = '0x9FD47F7E247bFd1C6BbB30Ef2f9f46E55370fFd6';
