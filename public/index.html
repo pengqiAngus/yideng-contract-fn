@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yideng Contract</title>
+    <style>
+      #app {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .loading {
+        font-size: 24px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="loading">Loading...</div>
+    </div>
+    <script>
+      // 创建一个简单的加载器
+      window.addEventListener('load', async () => {
+        try {
+          // 加载脚本加载器
+          const scriptLoader = document.createElement('script');
+          scriptLoader.src = '/js/scriptLoader.js';
+          document.head.appendChild(scriptLoader);
+
+          // 等待脚本加载器加载完成
+          await new Promise((resolve, reject) => {
+            scriptLoader.onload = resolve;
+            scriptLoader.onerror = reject;
+          });
+
+          // 加载应用脚本
+          await window.loadAppScripts();
+        } catch (error) {
+          console.error('Failed to initialize app:', error);
+          document.getElementById('app').innerHTML = 'Failed to load application';
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -48,6 +48,7 @@
     "selenium-webdriver": "^4.29.0",
     "viem": "^2.23.2",
     "wagmi": "^2.14.11",
+    "webpack-manifest-plugin": "^5.0.1",
     "workbox-webpack-plugin": "^7.3.0"
   },
   "devDependencies": {
