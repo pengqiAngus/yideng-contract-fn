@@ -7,8 +7,8 @@ import DappTest from '@/pages/DappTest';
 import DappTest2 from '@/pages/DappTest2';
 import Home from '@/pages/Home';
 import { lazy, Suspense } from 'react';
-import Loading from '@/components/common/Loading';
-
+import Loading from '@/components/common/Loading';	
+import RrwebPage from '@/pages/Rrweb';
 const AsyncTest = lazy(() => import('@/asyncComponents/common/AsyncTest'));
 
 const Layout = () => (
@@ -31,6 +31,7 @@ const mainRoutes = {
     { path: '*', element: <PageNotFoundView /> },
     { path: '/dapp', element: <DappTest2 /> },
     { path: '/', element: <Home /> },
+    { path: '/rrweb', element: <RrwebPage /> },
     { path: '404', element: <PageNotFoundView /> },
   ],
 };

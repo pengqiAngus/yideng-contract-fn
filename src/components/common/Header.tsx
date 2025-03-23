@@ -32,6 +32,7 @@ const Header = () => {
           <NavLink to="/">HomePage</NavLink>
           <NavLink to="/dapp">Dapp</NavLink>
           <NavLink to="/yideng/async-test">asyncTest</NavLink>
+          <NavLink to="/rrweb">rrweb</NavLink>
         </nav>
         <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
         {/* Right side wallet button */}
